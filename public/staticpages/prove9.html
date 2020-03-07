@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postage Rates</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/main.css" />
+</head>
+<body>
+    <h1>Compute Postage</h1>
+    <form action="/computePostage" method="get">
+        <label for="weight">Weight of Parcel (in ounces): </label>
+        <input type="number" name="weight" id="weight" min="1" max="13" step="0.01"><br>
+        <label for="postType">Type of Parcel: </label>
+        <select name="postType" id="postType">
+            <option value="letterStamped" selected>Letters (Stamped)</option>
+            <option value="letterMetered">Letters (Metered)</option>
+            <option value="largeEnv">Large Envelopes (Flats)</option>
+            <option value="firstClass">First-Class Package Service - Retail</option>
+        </select>
+        <button type="submit">Calculate Rate</button>
+    </form>
+</body>
+</html>
