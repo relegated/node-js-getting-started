@@ -13,23 +13,17 @@
                 let unl = document.getElementById("usernamelabel");
                 unl.innerHTML = "User Name (Validating)";
                 let un = document.getElementById("username");
-                $.get("/isUserNameAvailable",
+                let unAvailableRequest = $.get("/isUserNameAvailable",
                     {
                         username: un.value
-                    },
-                    (data, status) => {
-                        switch (status) {
-                            case 200:
-                                $("#usernamelabel").innerHTML = "User Name";
-                                break;
-                            case 409:
-                                $("#usernamelabel").innerHTML = "User Name (This User Is Taken)";
-                                break;
-                            default:
-                                $("#usernamelabel").innerHTML = "User Name (Error validating on server: " + status + ")";
-                                break;
-                        }
-                    })
+                    });
+                unAvailableRequest.success( (result) => {
+                    $("#usernamelabel").innerHTML = "User Name";
+                });
+                unAvailableRequest.fail( (jqXHR) => {
+                    let x = jqXHR;
+                    $("#usernamelabel").innerHTML = "User Name (This User Is Taken)";
+                });
             });
         });
 
