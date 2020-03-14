@@ -47,9 +47,12 @@ function checkUsernameAvailable(req, response) {
     let usercount = res.rows[0];
     if (usercount.id > 0){
       response.status(409);
+      response.end();
     }
-    response.status(200);
-    response.end();
-
-  })
+    else {
+      response.status(200);
+      response.end();
+    }
+    
+  });
 }
