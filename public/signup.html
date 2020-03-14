@@ -16,8 +16,8 @@
                 let unAvailableRequest = $.get("/isUserNameAvailable",
                     {
                         username: un.value
-                    });
-                unAvailableRequest.success( (result) => {
+                    },
+                    (result) => {
                     $("#usernamelabel").innerHTML = "User Name";
                 });
                 unAvailableRequest.fail( (jqXHR) => {
