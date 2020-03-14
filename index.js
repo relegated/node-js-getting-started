@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
 const rateCalc = require('./getPostRate');
 const PORT = process.env.PORT || 5000;
 
