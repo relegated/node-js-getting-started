@@ -10,9 +10,9 @@
         $(document).ready(function () {
             $(".passwordentry").keyup(validateAllFields);
             $("#username").blur(() => {
-                let unl = $("#usernamelabel");
+                let unl = document.getElementById("usernamelabel");
                 unl.innerHTML = "User Name (Validating)";
-                let un = $("#username");
+                let un = document.getElementById("username");
                 $.get("/isUserNameAvailable",
                     {
                         username: un.value
