@@ -47,14 +47,10 @@ function checkUsernameAvailable(req, response) {
     }
     let usercount = res.rows[0];
     if (Number(usercount.count) > 0){
-      response.status(409);
-      response.send(JSON.stringify(usercount));
-      response.end();
+      response.status(409).send(JSON.stringify(usercount));
     }
     else {
-      response.status(200);
-      response.send(sql + "/" + usernameSubmitted + "/" + JSON.stringify(usercount));
-      response.end();
+      response.status(200).send(sql + "/" + usernameSubmitted + "/" + JSON.stringify(usercount));
     }
     
   });
