@@ -18,14 +18,14 @@
                         username: un.value
                     },
                     (result) => {
-                    $("#usernamelabel").innerHTML = "User Name";
+                    unl.innerHTML = "User Name";
                 });
                 unAvailableRequest.fail( (jqXHR) => {
                     if (jqXHR.status === 409){
-                        $("#usernamelabel").innerHTML = "User Name (This User Is Taken)";
+                        unl.innerHTML = "User Name (This User Is Taken)";
                     }
                     else {
-                        $("#usernamelabel").innerHTML = "User Name (Error checking user: " + jqXHR.status + " " + jqXHR.statusText + ")";
+                        unl.innerHTML = "User Name (Error checking user: " + jqXHR.status + " " + jqXHR.statusText + ")";
                     }
                 });
             });
