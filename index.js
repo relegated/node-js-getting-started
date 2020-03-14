@@ -50,7 +50,7 @@ function checkUsernameAvailable(req, response) {
       response.status(409).send(JSON.stringify(usercount));
     }
     else {
-      response.status(200).send(sql + "/" + usernameSubmitted + "/" + JSON.stringify(usercount));
+      response.status(200).send(JSON.stringify(usercount));
     }
     
   });
