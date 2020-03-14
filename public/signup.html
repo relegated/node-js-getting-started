@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kana Master Sign Up</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".passwordentry").keyup(validateAllFields);
+            $("#username").blur(() => {
+                $("#usernamelabel").innerHTML = "User Name (Validating)";
+                $.get("/isUserNameAvailable",
+                    {
+                        username: $("#username").value
+                    },
+                    (data, status) => {
+                        switch (status) {
+                            case 200:
+                                $("#usernamelabel").innerHTML = "User Name";
+                                break;
+                            case 409:
+                                $("#usernamelabel").innerHTML = "User Name (This User Is Taken)";
+                                break;
+                            default:
+                                $("#usernamelabel").innerHTML = "User Name (Error validating on server: " + status + ")";
+                                break;
+                        }
+                    })
+            });
+        });
+
+        function validateAllFields() {
+            let submitButton = document.getElementById("sibmitButton");
+            submitButton.disabled = validateUsername() && validatePasswords();
+        }
+
+        function validateUsername() {
+            let usernamelabel = document.getElementById("usernamelabel");
+
+            return usernamelabel.innerHTML === "User Name";
+        }
+
+        function validatePasswords() {
+            let passwordEntry = document.getElementById("password").value;
+            let confirmPasswordEntry = document.getElementById("confirmpassword").value;
+            let passwordLabel = document.getElementById("passwordlabel");
+            let warningLabel = document.getElementById("confirmpasswordlabel");
+
+            if (passwordEntry.length < 4) {
+                setWarningLabel(passwordLabel, "Password must be longer than 4 characters", "red");
+                return false;
+            }
+            else {
+                setWarningLabel(passwordLabel, "Password", "black");
+            }
+
+            if (passwordEntry === confirmPasswordEntry) {
+                setWarningLabel(warningLabel, "Confirm Password", "black");
+                return true;
+            }
+
+            //invalid at this point
+            setWarningLabel(warningLabel, "Confirm Password (Must match password)", "red");
+            return false;
+        }
+
+        function setWarningLabel(label, text, color) {
+            label.innerHTML = text;
+            label.style.color = color;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Sign Up For Kana Master</h1>
+    <form action="/signUp.ejs" method="post">
+        <label for="username" id="usernamelabel">User Name</label>
+        <input type="text" name="username" id="username"><br>
+        <label for="password">Password</label>
+        <input type="text" name="password" id="password" class="passwordentry"><br>
+        <label for="confirmpassword" id="confirmpasswordlabel">Confirm Password</label>
+        <input type="text" name="confirmpassword" id="confirmpassword" class="passwordentry"><br>
+        <button disabled="disabled" type="submit" id="submitButton">Sign Up</button>
+    </form>
+</body>
+
+</html>
