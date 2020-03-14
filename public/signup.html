@@ -16,8 +16,8 @@
                 let unAvailableRequest = $.get("/isUserNameAvailable",
                     {
                         username: un.value
-                    },
-                    (result) => {
+                    });
+                unAvailableRequest.done((result) => {
                     unl.innerHTML = "User Name";
                 });
                 unAvailableRequest.fail( (jqXHR) => {
