@@ -10,10 +10,12 @@
         $(document).ready(function () {
             $(".passwordentry").keyup(validateAllFields);
             $("#username").blur(() => {
-                $("#usernamelabel").innerHTML = "User Name (Validating)";
+                let unl = $("#usernamelabel");
+                unl.innerHTML = "User Name (Validating)";
+                let un = $("#username");
                 $.get("/isUserNameAvailable",
                     {
-                        username: $("#username").value
+                        username: un.value
                     },
                     (data, status) => {
                         switch (status) {
