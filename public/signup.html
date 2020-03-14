@@ -33,7 +33,7 @@
 
         function validateAllFields() {
             let submitButton = document.getElementById("submitButton");
-            submitButton.disabled = validateUsername() && validatePasswords();
+            submitButton.disabled = !( validateUsername() && validatePasswords() );
         }
 
         function validateUsername() {

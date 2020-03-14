@@ -49,10 +49,12 @@ function checkUsernameAvailable(req, response) {
     if (Number(usercount.count) > 0){
       response.status(409);
       response.send(sql + "/" + usernameSubmitted + "/" + JSON.stringify(usercount));
+      response.end();
     }
     else {
       response.status(200);
       response.send(sql + "/" + usernameSubmitted + "/" + JSON.stringify(usercount));
+      response.end();
     }
     
   });
