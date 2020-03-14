@@ -39,6 +39,7 @@ function checkUsernameAvailable(req, response) {
 
   const sql = "SELECT COUNT(id) FROM user_table WHERE username = $1";
   const params = [usernameSubmitted];
+  response.setHeader("Content-Type", "application/json");
 
   pool.query(sql, params, (err, res) => {
     if (err) {
@@ -47,11 +48,11 @@ function checkUsernameAvailable(req, response) {
     let usercount = res.rows[0];
     if (usercount.count > 0){
       response.status(409);
-      response.end();
+      response.end(JSON.stringify(usercount));
     }
     else {
       response.status(200);
-      response.end();
+      response.end(JSON.stringify(usercount));
     }
     
   });
