@@ -39,7 +39,7 @@ function checkUsernameAvailable(req, response) {
 
   const sql = "SELECT COUNT(id) FROM user_table WHERE username = $1";
   const params = [usernameSubmitted];
-  response.setHeader("Content-Type", "application/json");
+  response.type('application/json');
 
   pool.query(sql, params, (err, res) => {
     if (err) {
