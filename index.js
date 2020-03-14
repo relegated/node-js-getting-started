@@ -45,7 +45,7 @@ function checkUsernameAvailable(req, response) {
       console.log(`Error in query: ${err}`);
     }
     let usercount = res.rows[0];
-    if (usercount.id > 0){
+    if (usercount.count > 0){
       response.status(409);
       response.end();
     }
