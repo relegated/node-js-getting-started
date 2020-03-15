@@ -74,7 +74,8 @@ function addUser(req, response) {
       response.status(500).send({ error: "Database error" });
     }
     else {
-      response.status(200).send({ result: "User added" });
+      let loginParams = { username: username };
+      response.render('pages/login', loginParams);
     }
   });
 }
