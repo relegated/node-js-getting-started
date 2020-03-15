@@ -59,11 +59,9 @@ function checkUsernameAvailable(req, response) {
 }
 
 function addUser(req, response) {
-  const username = req.query.username;
-  const pass = req.query.password;
-  const bod = req.body;
+  const username = req.body.username;
+  const pass = req.body.password;
   console.log(username + " / " + pass);
-  console.log(JSON.stringify(bod));
   let hashedPass = passwordHash.generate(pass);
   
   const sql = "INSERT INTO user_table (username, password_hash, user_level) VALUES ($1, $2, $3::int)";
