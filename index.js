@@ -66,15 +66,17 @@ function addUser(req, response) {
   
   const sql = "INSERT INTO user_table (username, password_hash, user_level) VALUES ($1, $2, $3::int)";
   const params = [username, hashedPass, 1];
-  response.type('application/json');
+  
 
   pool.query(sql, params, (err, res) => {
     if (err) {
       console.log(`Error in query: ${err}`);
+      response.type('application/json');
       response.status(500).send({ error: "Database error" });
     }
     else {
       let loginParams = { username: username };
+      response.type('html');
       response.render('pages/login', loginParams);
     }
   });
