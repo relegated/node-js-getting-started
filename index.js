@@ -20,7 +20,7 @@ express()
   .get('/computePostage', computePostage)
   .get('/isUserNameAvailable', checkUsernameAvailable)
   .post('/signUp', addUser)
-  .get('/kanalogin', (req, res) => res.render('pages/login'))
+  .get('/kanalogin', kanaLogin)
   .post('/login', validateLogin)
   .get('/loadKanaQuestions', loadKanaQuestions)
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
@@ -88,6 +88,10 @@ function addUser(req, response) {
   });
 }
 
+function kanaLogin(req, response) { 
+  response.render('pages/login', { username: ""});
+}
+
 function validateLogin(req, response) {
   const username = req.body.username;
   const pass = req.body.password;
@@ -128,10 +132,9 @@ function validateLogin(req, response) {
 }
 
 function loadKanaQuestions(req, response) {
-   const username = req.query.username;
    const level = Number(req.query.userlevel);
 
-   const sql = "SELECT root.romanji, h.kana_id, k.kana_id, root.level_requirement FROM sylable_root root " 
+   const sql = "SELECT root.sylable_root, h.kana_id, k.kana_id, root.level_requirement FROM sylable_root root " 
     + "LEFT JOIN symbol_value h ON h.sylable_root_id = root.id AND h.is_katakana = false "
     + "LEFT JOIN symbol_value k ON k.sylable_root_id = root.id AND k.is_katakana = true "
     + "WHERE root.level_requirement <= $1::int";
