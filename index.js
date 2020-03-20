@@ -20,6 +20,9 @@ express()
   .get('/computePostage', computePostage)
   .get('/isUserNameAvailable', checkUsernameAvailable)
   .post('/signUp', addUser)
+  .get('/kanalogin', (req, res) => res.render('pages/login'))
+  .post('/login', validateLogin)
+  .get('/loadKanaQuestions', loadKanaQuestions)
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 function computePostage(req, res) {
@@ -61,7 +64,7 @@ function checkUsernameAvailable(req, response) {
 function addUser(req, response) {
   const username = req.body.username;
   const pass = req.body.password;
-  console.log(username + " / " + pass);
+  
   let hashedPass = passwordHash.generate(pass);
   
   const sql = "INSERT INTO user_table (username, password_hash, user_level) VALUES ($1, $2, $3::int)";
@@ -75,9 +78,74 @@ function addUser(req, response) {
       response.status(500).send({ error: "Database error" });
     }
     else {
-      let loginParams = { username: username };
+      let loginParams = { 
+        username: username,
+        invalid: false 
+      };
       response.type('html');
       response.render('pages/login', loginParams);
     }
   });
+}
+
+function validateLogin(req, response) {
+  const username = req.body.username;
+  const pass = req.body.password;
+
+  const passHashSql = "SELECT password_hash, user_level FROM user_table WHERE username = $1";
+  const passHashParams = [username];
+
+  pool.query(passHashSql, passHashParams, (err, sqlResponse) => {
+    if (err) {
+      console.log(`Error in query: ${err}`);
+      response.type('application/json');
+      response.status(500).send({ error: "Database error" });
+    }
+    else {
+      let returnedHash = sqlResponse.rows[0].password_hash;
+      let successfulLogin = passwordHash.verify(pass, returnedHash);
+
+      if (! successfulLogin) {
+        let loginParams = { 
+          username: username,
+          invalid: true
+         };
+         response.type('html');
+         response.render('pages/login', loginParams);
+      }
+      else{
+        let userLevel = sqlResponse.rows[0].user_level
+        let mainPageParams = {
+          username: username,
+          level: userLevel
+        }
+        response.type('html');
+        response.render('pages/kanamain', mainPageParams);
+      }
+
+    }
+  }); 
+}
+
+function loadKanaQuestions(req, response) {
+   const username = req.query.username;
+   const level = Number(req.query.userlevel);
+
+   const sql = "SELECT root.romanji, h.kana_id, k.kana_id, root.level_requirement FROM sylable_root root " 
+    + "LEFT JOIN symbol_value h ON h.sylable_root_id = root.id AND h.is_katakana = false "
+    + "LEFT JOIN symbol_value k ON k.sylable_root_id = root.id AND k.is_katakana = true "
+    + "WHERE root.level_requirement <= $1::int";
+   const sqlParams = [level];
+
+   pool.query(sql, sqlParams, (err, sqlResponse) => {
+    if (err) {
+      console.log(`Error in query: ${err}`);
+      response.type('application/json');
+      response.status(500).send({ error: "Database error" });
+    }
+    else {
+      response.type('application/json');
+      response.status(200).send(sqlResponse.rows);
+    }
+   });
 }
