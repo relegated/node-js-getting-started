@@ -106,6 +106,7 @@ function validateLogin(req, response) {
       response.status(500).send({ error: "Database error" });
     }
     else {
+      console.log(sqlResponse);
       let returnedHash = sqlResponse.rows[0].password_hash;
       let successfulLogin = passwordHash.verify(pass, returnedHash);
 
