@@ -18,7 +18,7 @@ $(document).ready( () => {
                 loadedQuestions.push(new KanaQuestion(question));
             });
 
-            //select twelve questions, eight guaranteed to be player level
+            //select twelve questions, five guaranteed to be player level
             let quizQuestions = SelectQuizQuestions(loadedQuestions, level);
 
             //for now, throw the quiz questions on the page, later construct a view and process the quiz
@@ -37,7 +37,7 @@ function HideBeginButton() {
 
 function GetKanaQuestionApiString(username, level) {
     let path = "/loadKanaQuestions";
-    return path + "?username=" + username + "&userlevel=" + level;
+    return path + "?userlevel=" + level;
 }
 
 function SelectQuizQuestions(loadedQuestions, currentLevel) {
@@ -59,7 +59,7 @@ function SelectQuizQuestions(loadedQuestions, currentLevel) {
         }
 
         //need a current level question
-        if (numReviewQuestions == 4) {
+        if (numReviewQuestions == 7) {
             if (question.level < currentLevel) {
                 continue;
             }
