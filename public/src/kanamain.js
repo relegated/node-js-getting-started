@@ -83,7 +83,7 @@ function SelectQuizQuestions(loadedQuestions, currentLevel) {
 function shuffleArray(array) {
     let counter = array.length;
 
-    while (count > 0) {
+    while (counter > 0) {
         let index = Math.floor(Math.random() * counter);
         counter--;
 
