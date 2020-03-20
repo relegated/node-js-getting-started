@@ -148,6 +148,7 @@ function loadKanaQuestions(req, response) {
     }
     else {
       response.type('application/json');
+      console.log(JSON.stringify(sqlResponse));
       response.status(200).send(sqlResponse.rows);
     }
    });
