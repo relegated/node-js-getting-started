@@ -14,7 +14,7 @@ $(document).ready( () => {
         //load the questions with AJAX
         let loadedQuestions = [];
         $.get(GetKanaQuestionApiString(username, level), (data, status) => {
-            data.foreach(question => {
+            data.forEach(question => {
                 loadedQuestions.push(new KanaQuestion(question));
             });
 
