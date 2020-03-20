@@ -3,7 +3,7 @@ class KanaQuestion {
         this.romanji = question.romanji;
         this.hiragana = question.hiragana;
         this.katakana = question.katakana;
-        this.level = question.level;
+        this.level = question.userlevel;
     }
 
     DoesRomanjiMatch(enteredText){

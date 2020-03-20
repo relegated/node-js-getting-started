@@ -140,8 +140,6 @@ function loadKanaQuestions(req, response) {
     + "WHERE root.level_requirement <= $1::int";
    const sqlParams = [level];
 
-console.log(sql);
-
    pool.query(sql, sqlParams, (err, sqlResponse) => {
     if (err) {
       console.log(`Error in query: ${err}`);
@@ -150,7 +148,6 @@ console.log(sql);
     }
     else {
       response.type('application/json');
-      console.log(JSON.stringify(sqlResponse));
       response.status(200).send(sqlResponse.rows);
     }
    });
