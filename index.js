@@ -134,11 +134,13 @@ function validateLogin(req, response) {
 function loadKanaQuestions(req, response) {
    const level = Number(req.query.userlevel);
 
-   const sql = "SELECT root.sylable_root, h.kana_id, k.kana_id, root.level_requirement FROM sylable_root root " 
+   const sql = "SELECT root.sylable_root AS romanji, h.kana_id AS hiragana, k.kana_id AS katakana, root.level_requirement AS userlevel FROM sylable_root root " 
     + "LEFT JOIN symbol_value h ON h.sylable_root_id = root.id AND h.is_katakana = false "
     + "LEFT JOIN symbol_value k ON k.sylable_root_id = root.id AND k.is_katakana = true "
     + "WHERE root.level_requirement <= $1::int";
    const sqlParams = [level];
+
+console.log(sql);
 
    pool.query(sql, sqlParams, (err, sqlResponse) => {
     if (err) {
