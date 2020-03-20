@@ -135,8 +135,8 @@ function loadKanaQuestions(req, response) {
    const level = Number(req.query.userlevel);
 
    const sql = "SELECT root.sylable_root AS romanji, h.kana_id AS hiragana, k.kana_id AS katakana, root.level_requirement AS userlevel FROM sylable_root root " 
-    + "LEFT JOIN symbol_value h ON h.sylable_root_id = root.id AND h.is_katakana = false "
-    + "LEFT JOIN symbol_value k ON k.sylable_root_id = root.id AND k.is_katakana = true "
+    + "LEFT JOIN symbol_value h ON h.sylable_root_id = root.id AND h.is_katakana = FALSE "
+    + "LEFT JOIN symbol_value k ON k.sylable_root_id = root.id AND k.is_katakana = TRUE "
     + "WHERE root.level_requirement <= $1::int";
    const sqlParams = [level];
 
