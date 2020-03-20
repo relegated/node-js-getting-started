@@ -89,7 +89,7 @@ function addUser(req, response) {
 }
 
 function kanaLogin(req, response) { 
-  response.render('pages/login', { username: ""});
+  response.render('pages/login', { username: "", invalid: false});
 }
 
 function validateLogin(req, response) {
