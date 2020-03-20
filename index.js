@@ -106,11 +106,8 @@ function validateLogin(req, response) {
       response.status(500).send({ error: "Database error" });
     }
     else {
-      console.log(sqlResponse);
-      let returnedHash = sqlResponse.rows[0].password_hash;
-      let successfulLogin = passwordHash.verify(pass, returnedHash);
-
-      if (! successfulLogin) {
+      if (sqlResponse.rowCount == 0)
+      {
         let loginParams = { 
           username: username,
           invalid: true
@@ -118,16 +115,28 @@ function validateLogin(req, response) {
          response.type('html');
          response.render('pages/login', loginParams);
       }
-      else{
-        let userLevel = sqlResponse.rows[0].user_level
-        let mainPageParams = {
-          username: username,
-          level: userLevel
+      else {
+        let returnedHash = sqlResponse.rows[0].password_hash;
+        let successfulLogin = passwordHash.verify(pass, returnedHash);
+  
+        if (! successfulLogin) {
+          let loginParams = { 
+            username: username,
+            invalid: true
+           };
+           response.type('html');
+           response.render('pages/login', loginParams);
         }
-        response.type('html');
-        response.render('pages/kanamain', mainPageParams);
+        else{
+          let userLevel = sqlResponse.rows[0].user_level
+          let mainPageParams = {
+            username: username,
+            level: userLevel
+          }
+          response.type('html');
+          response.render('pages/kanamain', mainPageParams);
+        }
       }
-
     }
   }); 
 }
