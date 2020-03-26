@@ -20,6 +20,8 @@ $(document).ready( () => {
 
             //select twelve questions, five guaranteed to be player level
             let quizQuestions = SelectQuizQuestions(loadedQuestions, level);
+            let answeredQuestionCount = 0
+            let wrongAnswerCount = 0;
 
             //for now, throw the quiz questions on the page, later construct a view and process the quiz
             $("#quiz").html(JSON.stringify(quizQuestions));
@@ -93,4 +95,173 @@ function shuffleArray(array) {
     }
 
     return array;
+}
+
+function GenerateKanaQuizHTML(allQuestions) {
+    let returnHtml = "<div id=questionlist><ul>";
+    let innerHtml = "";
+    allQuestions.forEach(question => {
+        //form the opening of the list item
+        let singleQuestionHtml = "<li class=\"kanaquestion\">"
+        //1 = given h pick k
+        //2 = given k pick h
+        //3 = given r pick k
+        //4 = given k pick r
+        let questionType = getRandomInteger(1, 4); 
+        innerHtml = GenerateKanaQuestionHTML(question, questionType, allQuestions);
+    });
+    returnHtml += innerHtml + "</ul></div>";
+    return returnHtml;
+}
+
+function GenerateKanaQuestionHTML(question, questionType, allQuestions) {
+    switch (questionType) {
+        case 1:
+            return GenerateGivenHirPickKat(question, allQuestions);
+        case 2:
+            return GenerateGivenKatPickHir(question, allQuestions);
+        case 3:
+            return GenerateGivenRomPickKat(question, allQuestions);
+        case 4:
+        default:
+            return GenerateGivenKatPickRom(question, allQuestions);
+    }
+}
+
+function GenerateGivenHirPickKat(question, allQuestions) {
+    let returnHtml = "<div class=\"questionlabel\">Pick the katakana that matches this hiragana:</div>";
+    returnHtml += `<img class="kanaimage" src="img/${question.hiragana}<br><br>"`;
+    returnHtml += GenerateKanaOptions(question, allQuestions, true);
+    return returnHtml;
+}
+
+function GenerateGivenKatPickHir(question, allQuestions) {
+    let returnHtml = "<div class=\"questionlabel\">Pick the hiragana that matches this katakana:</div>";
+    returnHtml += `<img class="kanaimage" src="img/${question.katakana}<br><br>"`;
+    returnHtml += GenerateKanaOptions(question, allQuestions, false);
+    return returnHtml;
+}
+
+function GenerateGivenRomPickKat(question, allQuestions) {
+    let returnHtml = `<div class="questionlabel">Pick the katakana that matches this romanji:</div>`;
+    returnHtml += `<div class="questionlabel">${question.romanji}</div>`;
+    returnHtml += GenerateKanaOptions(question, allQuestions, true);
+    return returnHtml;
+}
+
+function GenerateGivenKatPickRom(question, allQuestions) {
+    let returnHtml = `<div class="questionlabel">Type the romanji that matches this katakana:</div>`;
+    returnHtml += `<img class="kanaimage" src="img/${question.katakana}<br><br>"`;
+    returnHtml += GenerateRomanjiOptions(question, allQuestions);
+    return returnHtml;
+}
+
+function GenerateKanaOptions(question, allQuestions, isKatakana) {
+    let returnHtml = `<div class="choices">`;
+    let correctResponsePosition = getRandomInteger(0, 3);
+    let usedKana = [];
+    usedKana.push(question);
+
+    let imageName = "";
+    if (isKatakana) {
+        imageName = question.katakana;
+    }
+    else {
+        imageName = question.hiragana;
+    }
+
+    for (let index = 0; index < 4; index++) {
+        if (index == correctResponsePosition) {
+            returnHtml += `<img class="kanaimage" src="img/${imageName}" onclick="CorrectAnswer(this)">`;
+        }        
+        else {
+            let valueAdded = false;
+            while (valueAdded == false) {
+                potentialQuestion = allQuestions[getRandomInteger(0, allQuestions.length - 1)];
+                let alreadyAdded = false;
+                let potentialImageName = "";
+                if (isKatakana) {
+                    potentialImageName = potentialQuestion.katakana;
+                }
+                else {
+                    potentialImageName = potentialQuestion.hiragana;
+                }
+                
+                for (let usedKanaIndex = 0; usedKanaIndex < usedKana.length; usedKanaIndex++) {
+                    if (usedKana[usedKanaIndex].romanji === potentialQuestion.romanji) {
+                        alreadyAdded = true;
+                    }
+                }
+
+                if (alreadyAdded == false) {
+                    usedKana.push(potentialQuestion);
+                    returnHtml += `<img class="kanaimage" src="img/${potentialImageName}" onclick="IncorrectAnswer(this)">`;
+                    valueAdded = true;
+                }
+            }
+        }
+    }
+
+    returnHtml += `</div>`;
+    return returnHtml;
+}
+
+function GenerateRomanjiOptions(question, allQuestions) {
+    let returnHtml = `<div class="choices">`;
+    let correctResponsePosition = getRandomInteger(0, 3);
+    let usedKana = [];
+    usedKana.push(question);
+
+    for (let index = 0; index < 4; index++) {
+        if (index == correctResponsePosition) {
+            returnHtml += `<div class="questionlabel" onclick="CorrectAnswer(this)">${question.romanji}</div>`;
+        }        
+        else {
+            let valueAdded = false;
+            while (valueAdded == false) {
+                potentialQuestion = allQuestions[getRandomInteger(0, allQuestions.length - 1)];
+                let alreadyAdded = false;
+                let potentialImageName = "";
+                if (isKatakana) {
+                    potentialImageName = potentialQuestion.katakana;
+                }
+                else {
+                    potentialImageName = potentialQuestion.hiragana;
+                }
+                
+                for (let usedKanaIndex = 0; usedKanaIndex < usedKana.length; usedKanaIndex++) {
+                    if (usedKana[usedKanaIndex].romanji === potentialQuestion.romanji) {
+                        alreadyAdded = true;
+                    }
+                }
+
+                if (alreadyAdded == false) {
+                    usedKana.push(potentialQuestion);
+                    returnHtml += `<div class="questionlabel" onclick="IncorrectAnswer(this)">${potentialQuestion.romanji}</div>`;
+                    valueAdded = true;
+                }
+            }
+        }
+    }
+
+
+    returnHtml += `</div>`;
+    return returnHtml;
+}
+
+function getRandomInteger(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function CorrectAnswer(clickedElement) {
+    clickedElement.style.border = "thick solid green";
+    answeredQuestionCount++;
+}
+
+function IncorrectAnswer(clickedElement) {
+    clickedElement.style.border = "thick solid red";
+    wrongAnswerCount++;
+    answeredQuestionCount++;
 }
