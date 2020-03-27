@@ -72,24 +72,24 @@ function GetKanaQuestionApiString(username, level) {
 }
 
 function GenerateStudyTiles(loadedKanaQuestions) {
-    let returnHtml = `<h2>Study Kana:</h2><div class="card-deck"><div class="card">`;
+    let returnHtml = `<h2>Study Kana:</h2><div class="card-deck">`;
 
     loadedKanaQuestions.forEach(question => {
         returnHtml += GetStudyTileHtmlForQuestion(question);
     });
 
-    returnHtml += `</div></div>`;
+    returnHtml += `</div>`;
     return returnHtml;
 }
 
 function GetStudyTileHtmlForQuestion(question) {
-    let returnHtml = `<div class="card-body">`;
+    let returnHtml = `<div class="card"><div class="card-body">`;
 
     returnHtml += `<div class="card-header">Romanji: ${question.romanji} <br></div>`;
     returnHtml += `<div>Hiragana: <img src="img/${question.hiragana}"> <br></div>`;
     returnHtml += `<div>Katakana: <img src="img/${question.katakana}"> <br></div>`;
 
-    returnHtml += `</div>`;
+    returnHtml += `</div></div>`;
     return returnHtml;
 }
 
