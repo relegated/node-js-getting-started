@@ -145,7 +145,7 @@ function shuffleArray(array) {
 }
 
 function GenerateKanaQuizHTML(allQuestions) {
-    let returnHtml = "<div id=questionlist><ul>";
+    let returnHtml = `<div id=questionlist class="container-fluid">`;
     let innerHtml = "";
     allQuestions.forEach(question => {
         //form the opening of the list item
