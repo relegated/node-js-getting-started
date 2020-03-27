@@ -322,6 +322,7 @@ function QuizContinue() {
         $.post("/levelup", { user : username, newLevel : (level + 1) }, 
         (data, status) => {
             level = data.newLevel;
+            $("#levelLabel").html(level);
         })
         .fail((xhr, status, error) => {
             alert("The server encountered a problem leveling you up.");
