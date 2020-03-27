@@ -41,12 +41,8 @@ $(document).ready(() => {
             quizQuestions = SelectQuizQuestions(loadedQuestions, level);
             answeredQuestionCount = 0;
             wrongAnswerCount = 0;
+            $("#quiz").html(GenerateKanaQuizHTML(quizQuestions));
         });
-
-
-        $("#quiz").html(GenerateKanaQuizHTML(quizQuestions));
-        //load the questions with AJAX
-
     });
 });
 
