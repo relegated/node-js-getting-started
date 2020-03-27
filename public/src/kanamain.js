@@ -368,8 +368,7 @@ function QuizContinue() {
             .fail((xhr, status, error) => {
                 alert("The server encountered a problem leveling you up.");
                 console.log(`Error - status: ${status} error: ${error}`);
-            })
-            ;
+            });
     }
 
     //need to reset quiz
