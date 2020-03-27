@@ -329,7 +329,11 @@ function getQuestionIndex(className) {
 }
 
 function getAnswerClass(className) {
-    return className.substring(className.search(" ") + 1);
+    //chop off the first bit
+    let retName = className.substring(className.search(" ") + 1);
+    //chop off the bootstrap bits
+    retName = retName.substring(0, retName.search(" "));
+    return retName;
 }
 
 function SetContinueButtonEnabled() {
