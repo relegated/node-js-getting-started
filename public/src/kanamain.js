@@ -355,7 +355,7 @@ function QuizContinue() {
     }
 
     if (wrongAnswerCount > 1) {
-        alert("You have not mastered this level.  Train again.");
+        alert("You have not mastered this level.  Study harder and train again.");
     }
     else {
         alert("You have mastered this level.  Congratulations!")
