@@ -331,8 +331,12 @@ function getQuestionIndex(className) {
 function getAnswerClass(className) {
     //chop off the first bit
     let retName = className.substring(className.search(" ") + 1);
-    //chop off the bootstrap bits
-    retName = retName.substring(0, retName.search(" "));
+    //chop off the bootstrap bits coniditionally
+    let nextSpaceIndex = retName.search(" ");
+    if (nextSpaceIndex > -1) {
+        retName = retName.substring(0, retName.search(" "));
+    }
+    
     return retName;
 }
 
