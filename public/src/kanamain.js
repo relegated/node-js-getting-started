@@ -140,14 +140,14 @@ function GenerateKanaQuestionHTML(question, questionType, allQuestions) {
 
 function GenerateGivenHirPickKat(question, allQuestions) {
     let returnHtml = "<div class=\"questionlabel\">Pick the katakana that matches this hiragana:</div>";
-    returnHtml += `<img class="kanaimage" src="img/${question.hiragana}<br><br>"`;
+    returnHtml += `<img class="kanaimage" src="img/${question.hiragana}"<br><br>`;
     returnHtml += GenerateKanaOptions(question, allQuestions, true);
     return returnHtml;
 }
 
 function GenerateGivenKatPickHir(question, allQuestions) {
     let returnHtml = "<div class=\"questionlabel\">Pick the hiragana that matches this katakana:</div>";
-    returnHtml += `<img class="kanaimage" src="img/${question.katakana}<br><br>"`;
+    returnHtml += `<img class="kanaimage" src="img/${question.katakana}"<br><br>`;
     returnHtml += GenerateKanaOptions(question, allQuestions, false);
     return returnHtml;
 }
@@ -161,7 +161,7 @@ function GenerateGivenRomPickKat(question, allQuestions) {
 
 function GenerateGivenKatPickRom(question, allQuestions) {
     let returnHtml = `<div class="questionlabel">Type the romanji that matches this katakana:</div>`;
-    returnHtml += `<img class="kanaimage" src="img/${question.katakana}<br><br>"`;
+    returnHtml += `<img class="kanaimage" src="img/${question.katakana}"<br><br>`;
     returnHtml += GenerateRomanjiOptions(question, allQuestions);
     return returnHtml;
 }
