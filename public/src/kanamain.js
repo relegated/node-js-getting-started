@@ -160,7 +160,7 @@ function GenerateGivenRomPickKat(question, allQuestions) {
 }
 
 function GenerateGivenKatPickRom(question, allQuestions) {
-    let returnHtml = `<div class="questionlabel">Type the romanji that matches this katakana:</div>`;
+    let returnHtml = `<div class="questionlabel">Click the romanji that matches this katakana:</div>`;
     returnHtml += `<img class="kanaimage" src="img/${question.katakana}"<br><br>`;
     returnHtml += GenerateRomanjiOptions(question, allQuestions);
     return returnHtml;
@@ -224,7 +224,7 @@ function GenerateRomanjiOptions(question, allQuestions) {
 
     for (let index = 0; index < 4; index++) {
         if (index == correctResponsePosition) {
-            returnHtml += `<div class="questionlabel optionforquestion_${question.index}" onclick="CorrectAnswer(this)">${question.romanji}</div>`;
+            returnHtml += `<button type="button" class="questionlabel optionforquestion_${question.index}" onclick="CorrectAnswer(this)">${question.romanji}</button>`;
         }
         else {
             let valueAdded = false;
@@ -241,7 +241,7 @@ function GenerateRomanjiOptions(question, allQuestions) {
 
                 if (alreadyAdded == false) {
                     usedKana.push(potentialQuestion);
-                    returnHtml += `<div class="questionlabel optionforquestion_${question.index}" onclick="IncorrectAnswer(this)">${potentialQuestion.romanji}</div>`;
+                    returnHtml += `<button type="button" class="questionlabel optionforquestion_${question.index}" onclick="IncorrectAnswer(this)">${potentialQuestion.romanji}</button>`;
                     valueAdded = true;
                 }
             }
