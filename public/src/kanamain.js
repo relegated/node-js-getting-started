@@ -155,7 +155,7 @@ function GenerateKanaQuizHTML(allQuestions) {
         //3 = given r pick k
         //4 = given k pick r
         let questionType = getRandomInteger(1, 4);
-        innerHtml += GenerateKanaQuestionHTML(question, questionType, allQuestions);
+        innerHtml += GenerateKanaQuestionHTML(question, questionType, allQuestions) + `</li>`;
     });
     returnHtml += innerHtml + "</ul></div>";
     //add a disabled continue button
@@ -178,14 +178,14 @@ function GenerateKanaQuestionHTML(question, questionType, allQuestions) {
 }
 
 function GenerateGivenHirPickKat(question, allQuestions) {
-    let returnHtml = "<div class=\"questionlabel\">Pick the katakana that matches this hiragana:</div>";
+    let returnHtml = `<div class="questionlabel">Pick the katakana that matches this hiragana:</div>`;
     returnHtml += `<img class="kanaimage" src="img/${question.hiragana}"<br><br>`;
     returnHtml += GenerateKanaOptions(question, allQuestions, true);
     return returnHtml;
 }
 
 function GenerateGivenKatPickHir(question, allQuestions) {
-    let returnHtml = "<div class=\"questionlabel\">Pick the hiragana that matches this katakana:</div>";
+    let returnHtml = `<div class="questionlabel">Pick the hiragana that matches this katakana:</div>`;
     returnHtml += `<img class="kanaimage" src="img/${question.katakana}"<br><br>`;
     returnHtml += GenerateKanaOptions(question, allQuestions, false);
     return returnHtml;
