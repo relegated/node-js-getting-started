@@ -1,8 +1,3 @@
-export const EQuestionStatus = {
-    NONE : "None",
-    CORRECT : "Correct",
-    INCORRECT : "Incorrect"
-};
 
 class KanaQuestion {
     constructor(question, index){
@@ -11,7 +6,6 @@ class KanaQuestion {
         this.katakana = question.katakana;
         this.level = question.userlevel;
         this.index = index;
-        this.status = EQuestionStatus.NONE;
     }
 
     DoesRomanjiMatch(enteredText){
