@@ -1,11 +1,13 @@
 let quizQuestions = [];
 let answeredQuestionCount = 0
 let wrongAnswerCount = 0;
+let username;
+let level;
 
 $(document).ready(() => {
     //get username and level
-    let username = $("#usernameLabel").html();
-    let level = $("#levelLabel").html();
+    username = $("#usernameLabel").html();
+    level = Number($("#levelLabel").html());
 
     //begin the quiz
     $("#beginButton").click(() => {
@@ -23,18 +25,12 @@ $(document).ready(() => {
                 loadedQuestions.push(new KanaQuestion(question, index));
             }
 
-            // data.forEach(question => {
-            //     loadedQuestions.push(new KanaQuestion(question));
-            //});
-
             //select twelve questions, five guaranteed to be player level
             quizQuestions = SelectQuizQuestions(loadedQuestions, level);
             answeredQuestionCount = 0;
             wrongAnswerCount = 0;
 
             $("#quiz").html(GenerateKanaQuizHTML(quizQuestions));
-            //for now, throw the quiz questions on the page, later construct a view and process the quiz
-            //$("#quiz").html(JSON.stringify(quizQuestions));
         });
     });
 });
@@ -45,6 +41,14 @@ function DisableBeginButton() {
 
 function HideBeginButton() {
     $("#beginButton").hide();
+}
+
+function EnableBeginButton() {
+    $("#beginButton").prop("disabled", false);
+}
+
+function ShowBeginButton() {
+    $("#beginButton").show();
 }
 
 function GetKanaQuestionApiString(username, level) {
@@ -121,6 +125,8 @@ function GenerateKanaQuizHTML(allQuestions) {
         innerHtml += GenerateKanaQuestionHTML(question, questionType, allQuestions);
     });
     returnHtml += innerHtml + "</ul></div>";
+    //add a disabled continue button
+    returnHtml += '<button type="button" id="quizContinue" onclick="QuizContinue()" disabled>Continue</button>';
     return returnHtml;
 }
 
@@ -289,4 +295,43 @@ function getQuestionIndex(className) {
 
 function getAnswerClass(className) {
     return className.substring(className.search(" ") + 1);
+}
+
+function QuizContinue() {
+    if (answeredQuestionCount < quizQuestions.length) {
+        return;
+    }
+
+    if (wrongAnswerCount > 1) {
+        alert("You have not mastered this level.  Train again.");
+    }
+    else {
+        alert("You have mastered this level.  Congratulations!")
+        //call to level user up
+        $.post("/levelup", { user : username, newLevel : (level + 1) }, 
+        (data, status) => {
+            level = data.newLevel;
+        })
+        .fail((xhr, status, error) => {
+            alert("The server encountered a problem leveling you up.");
+            console.log(`Error - status: ${status} error: ${error}`);
+        })
+        ;
+    }
+
+    //need to reset quiz
+    ResetQuiz();
+}
+
+function ResetQuiz() {
+    answeredQuestionCount = 0;
+    wrongAnswerCount = 0;
+    quizQuestions.splice(0, quizQuestions.length); //clear the quiz questions
+    ClearQuizHTML();
+    EnableBeginButton();
+    ShowBeginButton();
+}
+
+function ClearQuizHTML() {
+    $("#quiz").html("");
 }

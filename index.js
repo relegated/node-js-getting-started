@@ -23,6 +23,7 @@ express()
   .get('/kanalogin', kanaLogin)
   .post('/login', validateLogin)
   .get('/loadKanaQuestions', loadKanaQuestions)
+  .post('/levelup', levelUpUser)
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 function computePostage(req, res) {
@@ -161,4 +162,24 @@ function loadKanaQuestions(req, response) {
       response.status(200).send(sqlResponse.rows);
     }
    });
+}
+
+function levelUpUser(req, response) {
+  const user = req.body.user;
+  const newLevel = req.body.newLevel;
+
+  const sql = "UPDATE user_table SET user_level = $1 WHERE username = $2";
+  const sqlParams = [user, newLevel];
+
+  pool.query(sql, sqlParams, (err, sqlResponse) => {
+    if (err) {
+      console.log(`Error in query: ${err}`);
+      response.type('application/json');
+      response.status(500).send({error: "Database error" });
+    }
+    else {
+      response.type('application/json');
+      response.status(200).send({newLevel : newLevel});
+    }
+  });
 }
