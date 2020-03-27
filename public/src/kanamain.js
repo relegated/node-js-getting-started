@@ -85,7 +85,7 @@ function GenerateStudyTiles(loadedKanaQuestions) {
 function GetStudyTileHtmlForQuestion(question) {
     let returnHtml = `<div class="col-lg-2 col-md-3 col-6"><div class="card"><div class="card-body">`;
 
-    returnHtml += `<div class="card-header">Romanji: ${question.romanji} <br></div>`;
+    returnHtml += `<div class="card-header">Romanji:<br> ${question.romanji} <br></div>`;
     returnHtml += `<div>Hiragana: <img src="img/${question.hiragana}"> <br></div>`;
     returnHtml += `<div>Katakana: <img src="img/${question.katakana}"> <br></div>`;
 
