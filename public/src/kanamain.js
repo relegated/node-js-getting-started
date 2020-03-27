@@ -1,3 +1,4 @@
+let loadedQuestions = [];
 let quizQuestions = [];
 let answeredQuestionCount = 0
 let wrongAnswerCount = 0;
@@ -8,6 +9,17 @@ $(document).ready(() => {
     //get username and level
     username = $("#usernameLabel").html();
     level = Number($("#levelLabel").html());
+    
+    //load all questions to display study tiles
+    $.get(GetKanaQuestionApiString(username, level), (data, status) => {
+        for (let index = 0; index < data.length; index++) {
+            let question = data[index];
+            loadedQuestions.push(new KanaQuestion(question, index));
+        }
+
+        //display study tiles
+        $("#quiz").html(GenerateStudyTiles(loadedQuestions));
+    });
 
     //begin the quiz
     $("#beginButton").click(() => {
@@ -16,10 +28,10 @@ $(document).ready(() => {
         //hide the button
         HideBeginButton();
 
-
-        //load the questions with AJAX
-        let loadedQuestions = [];
+        //get updated questions according to current level
         $.get(GetKanaQuestionApiString(username, level), (data, status) => {
+            //clear existing loaded questions
+            loadedQuestions.splice(0, loadedQuestions.length);
             for (let index = 0; index < data.length; index++) {
                 let question = data[index];
                 loadedQuestions.push(new KanaQuestion(question, index));
@@ -29,9 +41,12 @@ $(document).ready(() => {
             quizQuestions = SelectQuizQuestions(loadedQuestions, level);
             answeredQuestionCount = 0;
             wrongAnswerCount = 0;
-
-            $("#quiz").html(GenerateKanaQuizHTML(quizQuestions));
         });
+
+
+        $("#quiz").html(GenerateKanaQuizHTML(quizQuestions));
+        //load the questions with AJAX
+
     });
 });
 
@@ -54,6 +69,28 @@ function ShowBeginButton() {
 function GetKanaQuestionApiString(username, level) {
     let path = "/loadKanaQuestions";
     return path + "?userlevel=" + level;
+}
+
+function GenerateStudyTiles(loadedKanaQuestions) {
+    let returnHtml = `<div class="studytile">`;
+
+    loadedKanaQuestions.forEach(question => {
+        returnHtml += GetStudyTileHtmlForQuestion(question);
+    });
+
+    returnHtml += `</div>`;
+    return returnHtml;
+}
+
+function GetStudyTileHtmlForQuestion(question) {
+    let returnHtml = `<div>`;
+
+    returnHtml += `<div>Romanji: ${question.romanji} <br></div>`;
+    returnHtml += `<div>Hiragana: ${question.hiragana} <br></div>`;
+    returnHtml += `<div>Katakana: ${question.katakana} <br></div>`;
+
+    returnHtml += `</div>`;
+    return returnHtml;
 }
 
 function SelectQuizQuestions(loadedQuestions, currentLevel) {
@@ -319,16 +356,16 @@ function QuizContinue() {
     else {
         alert("You have mastered this level.  Congratulations!")
         //call to level user up
-        $.post("/levelup", { user : username, newLevel : (level + 1) }, 
-        (data, status) => {
-            level = data.newLevel;
-            $("#levelLabel").html(level);
-        })
-        .fail((xhr, status, error) => {
-            alert("The server encountered a problem leveling you up.");
-            console.log(`Error - status: ${status} error: ${error}`);
-        })
-        ;
+        $.post("/levelup", { user: username, newLevel: (level + 1) },
+            (data, status) => {
+                level = data.newLevel;
+                $("#levelLabel").html(level);
+            })
+            .fail((xhr, status, error) => {
+                alert("The server encountered a problem leveling you up.");
+                console.log(`Error - status: ${status} error: ${error}`);
+            })
+            ;
     }
 
     //need to reset quiz
