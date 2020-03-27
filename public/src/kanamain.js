@@ -263,7 +263,7 @@ function GenerateRomanjiOptions(question, allQuestions) {
 
     for (let index = 0; index < 4; index++) {
         if (index == correctResponsePosition) {
-            returnHtml += `<button type="button" class="questionlabel optionforquestion_${question.index}" onclick="CorrectAnswer(this)">${question.romanji}</button>`;
+            returnHtml += `<button type="button" class="questionlabel optionforquestion_${question.index} btn btn-primary ptn-lg" onclick="CorrectAnswer(this)">${question.romanji}</button>`;
         }
         else {
             let valueAdded = false;
