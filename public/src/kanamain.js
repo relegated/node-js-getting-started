@@ -280,7 +280,7 @@ function GenerateRomanjiOptions(question, allQuestions) {
 
                 if (alreadyAdded == false) {
                     usedKana.push(potentialQuestion);
-                    returnHtml += `<button type="button" class="questionlabel optionforquestion_${question.index}" onclick="IncorrectAnswer(this)">${potentialQuestion.romanji}</button>`;
+                    returnHtml += `<button type="button" class="questionlabel optionforquestion_${question.index} btn btn-primary ptn-lg" onclick="IncorrectAnswer(this)">${potentialQuestion.romanji}</button>`;
                     valueAdded = true;
                 }
             }
