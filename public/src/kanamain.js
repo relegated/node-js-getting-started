@@ -262,7 +262,7 @@ function getRandomInteger(min, max) {
 function CorrectAnswer(clickedElement) {
     let questionIndex = getQuestionIndex(clickedElement.className);
     //quizQuestions[questionIndex].status = EQuestionStatus.CORRECT;
-    $("." + clickedElement.className).removeAttr("onclick");
+    $("." + clickedElement.className.replace(" ", ", .")).removeAttr("onclick");
     clickedElement.style.border = "thick solid green";
     answeredQuestionCount++;
 }
@@ -270,7 +270,7 @@ function CorrectAnswer(clickedElement) {
 function IncorrectAnswer(clickedElement) {
     let questionIndex = getQuestionIndex(clickedElement.className);
     //quizQuestions[questionIndex].status = EQuestionStatus.INCORRECT;
-    $("." + clickedElement.className).removeAttr("onclick");
+    $("." + clickedElement.className.replace(" ", ", .")).removeAttr("onclick");
     clickedElement.style.border = "thick solid red";
     wrongAnswerCount++;
     answeredQuestionCount++;
