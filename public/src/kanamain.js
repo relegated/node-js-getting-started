@@ -9,7 +9,7 @@ $(document).ready(() => {
     //get username and level
     username = $("#usernameLabel").html();
     level = Number($("#levelLabel").html());
-    
+
     //load all questions to display study tiles
     $.get(GetKanaQuestionApiString(username, level), (data, status) => {
         for (let index = 0; index < data.length; index++) {
@@ -336,7 +336,7 @@ function getAnswerClass(className) {
     if (nextSpaceIndex > -1) {
         retName = retName.substring(0, retName.search(" "));
     }
-    
+
     return retName;
 }
 
@@ -380,11 +380,20 @@ function ResetQuiz() {
     answeredQuestionCount = 0;
     wrongAnswerCount = 0;
     quizQuestions.splice(0, quizQuestions.length); //clear the quiz questions
-    ClearQuizHTML();
-    EnableBeginButton();
-    ShowBeginButton();
+    RepopulateStudyTiles();
 }
 
-function ClearQuizHTML() {
-    $("#quiz").html("");
+function RepopulateStudyTiles() {
+    $.get(GetKanaQuestionApiString(username, level), (data, status) => {
+        for (let index = 0; index < data.length; index++) {
+            let question = data[index];
+            loadedQuestions.push(new KanaQuestion(question, index));
+        }
+
+        //display study tiles
+        $("#quiz").html(GenerateStudyTiles(loadedQuestions));
+
+        EnableBeginButton();
+        ShowBeginButton();
+    });
 }
