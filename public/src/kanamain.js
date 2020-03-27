@@ -86,8 +86,8 @@ function GetStudyTileHtmlForQuestion(question) {
     let returnHtml = `<div>`;
 
     returnHtml += `<div>Romanji: ${question.romanji} <br></div>`;
-    returnHtml += `<div>Hiragana: ${question.hiragana} <br></div>`;
-    returnHtml += `<div>Katakana: ${question.katakana} <br></div>`;
+    returnHtml += `<div>Hiragana: <img src="img/${question.hiragana}"> <br></div>`;
+    returnHtml += `<div>Katakana: <img src="img/${question.katakana}"> <br></div>`;
 
     returnHtml += `</div>`;
     return returnHtml;
