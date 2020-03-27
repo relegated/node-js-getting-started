@@ -260,17 +260,17 @@ function getRandomInteger(min, max) {
 }
 
 function CorrectAnswer(clickedElement) {
-    let questionIndex = getQuestionIndex(clickedElement.className);
+    //let questionIndex = getQuestionIndex(clickedElement.className);
     //quizQuestions[questionIndex].status = EQuestionStatus.CORRECT;
-    $("." + clickedElement.className.replace(" ", ", .")).removeAttr("onclick");
+    $("." + getAnswerClass(clickedElement.className)).removeAttr("onclick");
     clickedElement.style.border = "thick solid green";
     answeredQuestionCount++;
 }
 
 function IncorrectAnswer(clickedElement) {
-    let questionIndex = getQuestionIndex(clickedElement.className);
+    //let questionIndex = getQuestionIndex(clickedElement.className);
     //quizQuestions[questionIndex].status = EQuestionStatus.INCORRECT;
-    $("." + clickedElement.className.replace(" ", ", .")).removeAttr("onclick");
+    $("." + getAnswerClass(clickedElement.className)).removeAttr("onclick");
     clickedElement.style.border = "thick solid red";
     wrongAnswerCount++;
     answeredQuestionCount++;
@@ -285,4 +285,8 @@ function getQuestionIndex(className) {
         }
         return Number(chunk);
     }
+}
+
+function getAnswerClass(className) {
+    return className.substring(className.search(" ") + 1);
 }
