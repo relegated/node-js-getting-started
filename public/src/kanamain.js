@@ -145,11 +145,11 @@ function shuffleArray(array) {
 }
 
 function GenerateKanaQuizHTML(allQuestions) {
-    let returnHtml = `<div id=questionlist class="container-fluid"><div class="row">`;
+    let returnHtml = `<div id=questionlist class="container-fluid">`;
     let innerHtml = "";
     allQuestions.forEach(question => {
         //form the opening of the list item
-        let singleQuestionHtml = `<div class="card"><div class="kanaquestion question${question.index} card-body">`
+        innerHtml += `<div class="card"><div class="kanaquestion question${question.index} card-body">`;
         //1 = given h pick k
         //2 = given k pick h
         //3 = given r pick k
@@ -157,7 +157,7 @@ function GenerateKanaQuizHTML(allQuestions) {
         let questionType = getRandomInteger(1, 4);
         innerHtml += GenerateKanaQuestionHTML(question, questionType, allQuestions) + `</div></div>`;
     });
-    returnHtml += innerHtml + "</div></div>";
+    returnHtml += innerHtml + "</div>";
     //add a disabled continue button
     returnHtml += '<button type="button" id="quizContinue" class="btn btn-primary ptn-lg" onclick="QuizContinue()" disabled>Continue</button>';
     return returnHtml;
@@ -193,7 +193,7 @@ function GenerateGivenKatPickHir(question, allQuestions) {
 
 function GenerateGivenRomPickKat(question, allQuestions) {
     let returnHtml = `<div class="questionlabel">Pick the katakana that matches this romanji:</div>`;
-    returnHtml += `<div class="questionlabel">${question.romanji}</div>`;
+    returnHtml += `<div class="questionlabel"><strong>${question.romanji}</strong></div>`;
     returnHtml += GenerateKanaOptions(question, allQuestions, true);
     return returnHtml;
 }
