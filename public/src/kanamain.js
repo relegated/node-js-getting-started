@@ -163,7 +163,7 @@ function GenerateKanaQuizHTML(allQuestions) {
     });
     returnHtml += innerHtml + "</ul></div>";
     //add a disabled continue button
-    returnHtml += '<button type="button" id="quizContinue" onclick="QuizContinue()" disabled>Continue</button>';
+    returnHtml += '<button type="button" id="quizContinue" class="btn btn-primary ptn-lg" onclick="QuizContinue()" disabled>Continue</button>';
     return returnHtml;
 }
 
