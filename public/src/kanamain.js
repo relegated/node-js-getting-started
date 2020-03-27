@@ -230,13 +230,7 @@ function GenerateRomanjiOptions(question, allQuestions) {
                 potentialQuestion = allQuestions[getRandomInteger(0, allQuestions.length - 1)];
                 let alreadyAdded = false;
                 let potentialImageName = "";
-                if (isKatakana) {
-                    potentialImageName = potentialQuestion.katakana;
-                }
-                else {
-                    potentialImageName = potentialQuestion.hiragana;
-                }
-                
+                                
                 for (let usedKanaIndex = 0; usedKanaIndex < usedKana.length; usedKanaIndex++) {
                     if (usedKana[usedKanaIndex].romanji === potentialQuestion.romanji) {
                         alreadyAdded = true;
