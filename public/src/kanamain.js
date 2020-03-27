@@ -1,12 +1,14 @@
 let quizQuestions = [];
+let answeredQuestionCount = 0
+let wrongAnswerCount = 0;
 
-$(document).ready( () => {
+$(document).ready(() => {
     //get username and level
     let username = $("#usernameLabel").html();
     let level = $("#levelLabel").html();
 
     //begin the quiz
-    $("#beginButton").click( () => {
+    $("#beginButton").click(() => {
         //disable the begin button so it can't be clicked again
         DisableBeginButton();
         //hide the button
@@ -20,15 +22,15 @@ $(document).ready( () => {
                 let question = data[index];
                 loadedQuestions.push(new KanaQuestion(question, index));
             }
-            
+
             // data.forEach(question => {
             //     loadedQuestions.push(new KanaQuestion(question));
             //});
 
             //select twelve questions, five guaranteed to be player level
             quizQuestions = SelectQuizQuestions(loadedQuestions, level);
-            let answeredQuestionCount = 0
-            let wrongAnswerCount = 0;
+            answeredQuestionCount = 0;
+            wrongAnswerCount = 0;
 
             $("#quiz").html(GenerateKanaQuizHTML(quizQuestions));
             //for now, throw the quiz questions on the page, later construct a view and process the quiz
@@ -57,7 +59,7 @@ function SelectQuizQuestions(loadedQuestions, currentLevel) {
 
     for (let index = 0; index < loadedQuestions.length; index++) {
         const question = loadedQuestions[index];
-        
+
         //reached the total number of questions
         if ((numCurrentLevelQuestions + numReviewQuestions) == 12) {
             break;
@@ -115,7 +117,7 @@ function GenerateKanaQuizHTML(allQuestions) {
         //2 = given k pick h
         //3 = given r pick k
         //4 = given k pick r
-        let questionType = getRandomInteger(1, 4); 
+        let questionType = getRandomInteger(1, 4);
         innerHtml = GenerateKanaQuestionHTML(question, questionType, allQuestions);
     });
     returnHtml += innerHtml + "</ul></div>";
@@ -181,7 +183,7 @@ function GenerateKanaOptions(question, allQuestions, isKatakana) {
     for (let index = 0; index < 4; index++) {
         if (index == correctResponsePosition) {
             returnHtml += `<img class="kanaimage optionforquestion_${question.index}" src="img/${imageName}" onclick="CorrectAnswer(this)">`;
-        }        
+        }
         else {
             let valueAdded = false;
             while (valueAdded == false) {
@@ -194,7 +196,7 @@ function GenerateKanaOptions(question, allQuestions, isKatakana) {
                 else {
                     potentialImageName = potentialQuestion.hiragana;
                 }
-                
+
                 for (let usedKanaIndex = 0; usedKanaIndex < usedKana.length; usedKanaIndex++) {
                     if (usedKana[usedKanaIndex].romanji === potentialQuestion.romanji) {
                         alreadyAdded = true;
@@ -223,14 +225,14 @@ function GenerateRomanjiOptions(question, allQuestions) {
     for (let index = 0; index < 4; index++) {
         if (index == correctResponsePosition) {
             returnHtml += `<div class="questionlabel optionforquestion_${question.index}" onclick="CorrectAnswer(this)">${question.romanji}</div>`;
-        }        
+        }
         else {
             let valueAdded = false;
             while (valueAdded == false) {
                 potentialQuestion = allQuestions[getRandomInteger(0, allQuestions.length - 1)];
                 let alreadyAdded = false;
                 let potentialImageName = "";
-                                
+
                 for (let usedKanaIndex = 0; usedKanaIndex < usedKana.length; usedKanaIndex++) {
                     if (usedKana[usedKanaIndex].romanji === potentialQuestion.romanji) {
                         alreadyAdded = true;
