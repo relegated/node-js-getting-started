@@ -118,7 +118,7 @@ function GenerateKanaQuizHTML(allQuestions) {
         //3 = given r pick k
         //4 = given k pick r
         let questionType = getRandomInteger(1, 4);
-        innerHtml = GenerateKanaQuestionHTML(question, questionType, allQuestions);
+        innerHtml += GenerateKanaQuestionHTML(question, questionType, allQuestions);
     });
     returnHtml += innerHtml + "</ul></div>";
     return returnHtml;
