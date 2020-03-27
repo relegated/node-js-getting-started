@@ -271,6 +271,7 @@ function CorrectAnswer(clickedElement) {
     $("." + getAnswerClass(clickedElement.className)).removeAttr("onclick");
     clickedElement.style.border = "thick solid green";
     answeredQuestionCount++;
+    SetContinueButtonEnabled();
 }
 
 function IncorrectAnswer(clickedElement) {
@@ -280,6 +281,7 @@ function IncorrectAnswer(clickedElement) {
     clickedElement.style.border = "thick solid red";
     wrongAnswerCount++;
     answeredQuestionCount++;
+    SetContinueButtonEnabled();
 }
 
 function getQuestionIndex(className) {
@@ -295,6 +297,12 @@ function getQuestionIndex(className) {
 
 function getAnswerClass(className) {
     return className.substring(className.search(" ") + 1);
+}
+
+function SetContinueButtonEnabled() {
+    if (answeredQuestionCount == quizQuestions.length) {
+        $("#quizContinue").prop("disabled", false);
+    }
 }
 
 function QuizContinue() {
