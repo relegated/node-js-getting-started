@@ -6,6 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kana Master Sign Up</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        .card {
+            padding: 7px 7px 7px 7px;
+        }
+        h1, h2, h3, button {
+            margin: 7px 7px 7px 7px;
+        }
+    </style>
     <script>
         $(document).ready(function () {
             $(".passwordentry").keyup(validateAllFields);
@@ -82,7 +91,7 @@
         <input type="password" name="password" id="password" class="passwordentry"><br>
         <label for="confirmpassword" id="confirmpasswordlabel">Confirm Password</label><br>
         <input type="password" name="confirmpassword" id="confirmpassword" class="passwordentry"><br>
-        <button disabled="disabled" type="submit" id="submitButton">Sign Up</button>
+        <button disabled="disabled" type="submit" id="submitButton" class="btn btn-primary ptn-lg">Sign Up</button>
     </form>
 </body>
 
