@@ -72,7 +72,7 @@ function GetKanaQuestionApiString(username, level) {
 }
 
 function GenerateStudyTiles(loadedKanaQuestions) {
-    let returnHtml = `<div class="studytile">`;
+    let returnHtml = `<h2>Study Kana:</h2><div class="studytile">`;
 
     loadedKanaQuestions.forEach(question => {
         returnHtml += GetStudyTileHtmlForQuestion(question);
