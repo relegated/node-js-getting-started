@@ -149,15 +149,15 @@ function GenerateKanaQuizHTML(allQuestions) {
     let innerHtml = "";
     allQuestions.forEach(question => {
         //form the opening of the list item
-        let singleQuestionHtml = `<li class="kanaquestion question${question.index}">`
+        let singleQuestionHtml = `<div class="card"><div class="kanaquestion question${question.index} card-body">`
         //1 = given h pick k
         //2 = given k pick h
         //3 = given r pick k
         //4 = given k pick r
         let questionType = getRandomInteger(1, 4);
-        innerHtml += GenerateKanaQuestionHTML(question, questionType, allQuestions) + `</li>`;
+        innerHtml += GenerateKanaQuestionHTML(question, questionType, allQuestions) + `</div></div>`;
     });
-    returnHtml += innerHtml + "</ul></div>";
+    returnHtml += innerHtml + "</div>";
     //add a disabled continue button
     returnHtml += '<button type="button" id="quizContinue" class="btn btn-primary ptn-lg" onclick="QuizContinue()" disabled>Continue</button>';
     return returnHtml;
