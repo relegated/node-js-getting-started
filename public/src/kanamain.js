@@ -303,6 +303,9 @@ function SetContinueButtonEnabled() {
     if (answeredQuestionCount == quizQuestions.length) {
         $("#quizContinue").prop("disabled", false);
     }
+    else {
+        $("#quizContinue").prop("disabled", true);
+    }
 }
 
 function QuizContinue() {
