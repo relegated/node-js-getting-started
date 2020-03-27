@@ -166,10 +166,10 @@ function loadKanaQuestions(req, response) {
 
 function levelUpUser(req, response) {
   const user = req.body.user;
-  const newLevel = req.body.newLevel;
+  const newLevel = Number(req.body.newLevel);
 
-  const sql = "UPDATE user_table SET user_level = $1 WHERE username = $2";
-  const sqlParams = [user, newLevel];
+  const sql = "UPDATE user_table SET user_level = $1::int WHERE username = $2";
+  const sqlParams = [newLevel, user];
 
   pool.query(sql, sqlParams, (err, sqlResponse) => {
     if (err) {
