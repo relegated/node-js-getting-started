@@ -1,3 +1,7 @@
+import { EQuestionStatus } from "./KanaQuestion";
+
+let quizQuestions = [];
+
 $(document).ready( () => {
     //get username and level
     let username = $("#usernameLabel").html();
@@ -14,17 +18,23 @@ $(document).ready( () => {
         //load the questions with AJAX
         let loadedQuestions = [];
         $.get(GetKanaQuestionApiString(username, level), (data, status) => {
-            data.forEach(question => {
-                loadedQuestions.push(new KanaQuestion(question));
-            });
+            for (let index = 0; index < data.length; index++) {
+                let question = data[index];
+                loadedQuestions.push(new KanaQuestion(question, index));
+            }
+            
+            // data.forEach(question => {
+            //     loadedQuestions.push(new KanaQuestion(question));
+            //});
 
             //select twelve questions, five guaranteed to be player level
-            let quizQuestions = SelectQuizQuestions(loadedQuestions, level);
+            quizQuestions = SelectQuizQuestions(loadedQuestions, level);
             let answeredQuestionCount = 0
             let wrongAnswerCount = 0;
 
+            $("#quiz").html(GenerateKanaQuizHTML(quizQuestions));
             //for now, throw the quiz questions on the page, later construct a view and process the quiz
-            $("#quiz").html(JSON.stringify(quizQuestions));
+            //$("#quiz").html(JSON.stringify(quizQuestions));
         });
     });
 });
@@ -102,7 +112,7 @@ function GenerateKanaQuizHTML(allQuestions) {
     let innerHtml = "";
     allQuestions.forEach(question => {
         //form the opening of the list item
-        let singleQuestionHtml = "<li class=\"kanaquestion\">"
+        let singleQuestionHtml = `<li class="kanaquestion question${question.index}">`
         //1 = given h pick k
         //2 = given k pick h
         //3 = given r pick k
@@ -172,7 +182,7 @@ function GenerateKanaOptions(question, allQuestions, isKatakana) {
 
     for (let index = 0; index < 4; index++) {
         if (index == correctResponsePosition) {
-            returnHtml += `<img class="kanaimage" src="img/${imageName}" onclick="CorrectAnswer(this)">`;
+            returnHtml += `<img class="kanaimage optionforquestion_${question.index}" src="img/${imageName}" onclick="CorrectAnswer(this)">`;
         }        
         else {
             let valueAdded = false;
@@ -195,7 +205,7 @@ function GenerateKanaOptions(question, allQuestions, isKatakana) {
 
                 if (alreadyAdded == false) {
                     usedKana.push(potentialQuestion);
-                    returnHtml += `<img class="kanaimage" src="img/${potentialImageName}" onclick="IncorrectAnswer(this)">`;
+                    returnHtml += `<img class="kanaimage optionforquestion_${question.index}" src="img/${potentialImageName}" onclick="IncorrectAnswer(this)">`;
                     valueAdded = true;
                 }
             }
@@ -214,7 +224,7 @@ function GenerateRomanjiOptions(question, allQuestions) {
 
     for (let index = 0; index < 4; index++) {
         if (index == correctResponsePosition) {
-            returnHtml += `<div class="questionlabel" onclick="CorrectAnswer(this)">${question.romanji}</div>`;
+            returnHtml += `<div class="questionlabel optionforquestion_${question.index}" onclick="CorrectAnswer(this)">${question.romanji}</div>`;
         }        
         else {
             let valueAdded = false;
@@ -237,7 +247,7 @@ function GenerateRomanjiOptions(question, allQuestions) {
 
                 if (alreadyAdded == false) {
                     usedKana.push(potentialQuestion);
-                    returnHtml += `<div class="questionlabel" onclick="IncorrectAnswer(this)">${potentialQuestion.romanji}</div>`;
+                    returnHtml += `<div class="questionlabel optionforquestion_${question.index}" onclick="IncorrectAnswer(this)">${potentialQuestion.romanji}</div>`;
                     valueAdded = true;
                 }
             }
@@ -256,12 +266,29 @@ function getRandomInteger(min, max) {
 }
 
 function CorrectAnswer(clickedElement) {
+    let questionIndex = getQuestionIndex(clickedElement.className);
+    quizQuestions[questionIndex].status = EQuestionStatus.CORRECT;
+    $("." + clickedElement.className).removeAttr("onclick");
     clickedElement.style.border = "thick solid green";
     answeredQuestionCount++;
 }
 
 function IncorrectAnswer(clickedElement) {
+    let questionIndex = getQuestionIndex(clickedElement.className);
+    quizQuestions[questionIndex].status = EQuestionStatus.INCORRECT;
+    $("." + clickedElement.className).removeAttr("onclick");
     clickedElement.style.border = "thick solid red";
     wrongAnswerCount++;
     answeredQuestionCount++;
+}
+
+function getQuestionIndex(className) {
+    let nameChunks = className.split("_");
+    for (let index = 0; index < nameChunks.length; index++) {
+        const chunk = nameChunks[index];
+        if (isNaN(chunk)) {
+            continue;
+        }
+        return Number(chunk);
+    }
 }
