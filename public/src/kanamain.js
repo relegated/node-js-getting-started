@@ -145,7 +145,7 @@ function shuffleArray(array) {
 }
 
 function GenerateKanaQuizHTML(allQuestions) {
-    let returnHtml = `<div id=questionlist class="container-fluid">`;
+    let returnHtml = `<div id=questionlist class="container-fluid"><div class="row">`;
     let innerHtml = "";
     allQuestions.forEach(question => {
         //form the opening of the list item
@@ -157,7 +157,7 @@ function GenerateKanaQuizHTML(allQuestions) {
         let questionType = getRandomInteger(1, 4);
         innerHtml += GenerateKanaQuestionHTML(question, questionType, allQuestions) + `</div></div>`;
     });
-    returnHtml += innerHtml + "</div>";
+    returnHtml += innerHtml + "</div></div>";
     //add a disabled continue button
     returnHtml += '<button type="button" id="quizContinue" class="btn btn-primary ptn-lg" onclick="QuizContinue()" disabled>Continue</button>';
     return returnHtml;
